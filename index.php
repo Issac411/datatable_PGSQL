@@ -17,6 +17,7 @@
 	//----------------------------------------------^ 
 	// On oublie pas d'importer les librairies de datatable, on va aussi penser a utiliser un fichier CSS pour que ça ai une apparence.
 		//ZEUB ZEUB ZUEB OUI SALUT BOUTTE CECI  est un nieme test
+    //testastos
 	?>
     <title>Utilisation du datable</title>
 
