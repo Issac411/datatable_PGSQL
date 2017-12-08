@@ -34,7 +34,7 @@ CREATE TABLE `articles` (
   `libelle` varchar(100) DEFAULT NULL,
   `taux_tva` float DEFAULT NULL,
   `prix_unitaire_ht` float DEFAULT NULL,
-  `prix_ttc` float GENERATED ALWAYS AS (((`prix_unitaire_ht` + (`prix_unitaire_ht` * (`taux_tva` / 100))) - `reduction`)) VIRTUAL,
+  `prix_ttc` float,
   `disponible` tinyint(1) DEFAULT NULL,
   `reduction` float DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;

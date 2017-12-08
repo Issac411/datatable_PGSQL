@@ -7,11 +7,11 @@
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
 
-    <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="js/dataTables.select.min.js"></script>
-    <script type="text/javascript" src="js/datatables.js"></script>
+    <script type="text/javascript" src="datatable/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="datatable/js/dataTables.select.min.js"></script>
+    <script type="text/javascript" src="datatable/js/datatables.js"></script>
 
-    <style type="text/css" media="all">@import "css/jquery.dataTables.min.css";</style>
+    <style type="text/css" media="all">@import "datatable/css/jquery.dataTables.min.css";</style>
     
 	<?php
 	//----------------------------------------------^ 

@@ -1,5 +1,5 @@
 	  $(document).ready(function() {
-		    $('#articles').DataTable( { "pagingType": "full_numbers", "order": [[ 1, "asc" ]], "processing": true, "serverSide": true, "ajax": "ajax/chargement_articles.php",
+		    $('#articles').DataTable( { "pagingType": "full_numbers", "order": [[ 1, "asc" ]], "processing": true, "serverSide": true, "ajax": "datatable/ajax/chargement_articles.php",
 		        "lengthMenu": [ 25, 50, 75, 100 ],
 		        "language": {
 	                "url": "js/dataTables.french.lang",

@@ -41,15 +41,13 @@ $columns = array(
     array( 'db' => 'reduction', 'dt' => 9)
 
     );
-
- 
 // SQL server connection information
 $sql_details = array(
     'eng' => 'pgsql',
-    'user' => 'root',
+    'user' => '',
     'pass' => '',
-    'db'   => 'Bourdon',
-    'host' => 'localhost'
+    'db'   => '',
+    'host' => ''
 );
  
  
