@@ -29,10 +29,6 @@ class SSP {
 	 */
 	static function data_output ( $columns, $data )
 	{
-			$bdd2 =mysqli_connect('localhost','root','','Bourdon');
-			mysqli_query($bdd2,'SET NAMES utf8');
-
-
 		$out = array();
 		
 		for ( $i=0, $ien=count($data) ; $i<$ien ; $i++ ) {
@@ -83,13 +79,7 @@ class SSP {
 
 							case 5:
 								$taux_tva= $data[$i][ $columns[$j]['db'] ];
-								$req= 'select * from tva where (id='.$id_tva.')';
-								$res = mysqli_query($bdd2,$req);
-								if ($valeur = mysqli_fetch_assoc($res)) {
-									$libelle_tva = $valeur['libelle'];
-									$taux_tva = $valeur['taux'];
-								}
-								$row[ $column['dt'] ] = $libelle_tva." : ".$taux_tva.'%';
+								$row[ $column['dt'] ] = $taux_tva;
 								break;	
 
 							case 6:
@@ -98,8 +88,8 @@ class SSP {
 								break;
 
 							case 7:
-								$prix_ttc= $prix_unitaire_ht+(($prix_unitaire_ht*$taux_tva)/100);
-								$row[ $column['dt'] ] = $prix_ttc."€";
+								$prix_ttc= $data[$i][ $columns[$j]['db'] ];
+								$row[ $column['dt'] ] = $prix_ttc;
 								break; 
 
 							case 8:
@@ -137,12 +127,6 @@ class SSP {
 		}
 		return $out;
 	}
-
-	function categorie() {
-	$bdd =mysqli_connect('localhost','root','','bourdon');
-	
-	}
-
 
 	/**
 	 * Database connection
@@ -426,7 +410,7 @@ class SSP {
 			);
 
 			$db = @new PDO(
-				"mysql:host={$sql_details['host']};dbname={$sql_details['db']}",
+				"{$sql_details['eng']}:host={$sql_details['host']};dbname={$sql_details['db']}",
 				$sql_details['user'],
 				$sql_details['pass'],
 				$options

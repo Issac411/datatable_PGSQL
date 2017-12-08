@@ -45,6 +45,7 @@ $columns = array(
  
 // SQL server connection information
 $sql_details = array(
+    'eng' => 'pgsql',
     'user' => 'root',
     'pass' => '',
     'db'   => 'Bourdon',
