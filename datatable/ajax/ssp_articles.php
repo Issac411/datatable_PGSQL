@@ -161,7 +161,7 @@ class SSP {
 	{
 		$limit = '';
 		if ( isset($request['start']) && $request['length'] != -1 ) {
-			$limit = "LIMIT ".intval($request['start']).", ".intval($request['length']);
+			$limit = "OFFSET ".intval($request['start'])." LIMIT ".intval($request['length']);
 		}
 		return $limit;
 	}
@@ -179,7 +179,7 @@ class SSP {
 		$order = '';
 		if ( isset($request['order']) && count($request['order']) ) {
 			$orderBy = array();
-			$dtColumns = self::pluck( $columns, 'dt' );
+			$dtColumns = self::pluck( $columns, 'dt');
 			for ( $i=0, $ien=count($request['order']) ; $i<$ien ; $i++ ) {
 				// Convert the column index into the column data property
 				$columnIdx = intval($request['order'][$i]['column']);
@@ -190,7 +190,7 @@ class SSP {
 					$dir = $request['order'][$i]['dir'] === 'asc' ?
 						'ASC' :
 						'DESC';
-					$orderBy[] = '`'.$column['db'].'` '.$dir;
+					$orderBy[] = '"'.$column['db'].'" '.$dir;
 				}
 			}
 			$order = 'ORDER BY '.implode(', ', $orderBy);
@@ -225,7 +225,7 @@ class SSP {
 				$column = $columns[ $columnIdx ];
 				if ( $requestColumn['searchable'] == 'true' ) {
 					$binding = self::bind( $bindings, '%'.$str.'%', PDO::PARAM_STR );
-					$globalSearch[] = "`".$column['db']."` LIKE ".$binding;
+					$globalSearch[] = "\"".$column['db']."\" LIKE ".$binding;
 				}
 			}
 		}
@@ -239,7 +239,7 @@ class SSP {
 				if ( $requestColumn['searchable'] == 'true' &&
 				 $str != '' ) {
 					$binding = self::bind( $bindings, '%'.$str.'%', PDO::PARAM_STR );
-					$columnSearch[] = "`".$column['db']."` LIKE ".$binding;
+					$columnSearch[] = "\"".$column['db']."\" LIKE ".$binding;
 				}
 			}
 		}
@@ -282,17 +282,24 @@ class SSP {
 		$where = self::filter( $request, $columns, $bindings );
 		// Main query to actually get the data
 		$data = self::sql_exec( $db, $bindings,
-			"SELECT SQL_CALC_FOUND_ROWS \"".implode("\", \"", self::pluck($columns, 'db'))."\"
+			"SELECT \"".implode("\", \"", self::pluck($columns, 'db'))."\"
 			 FROM \"$table\"
 			 $where
 			 $order
 			 $limit"
 		);
+		$count = self::sql_exec( $db, $bindings,
+            "SELECT \"".implode("\", \"", self::pluck($columns, 'db'))."\"
+			 FROM \"$table\"
+			 $where
+			 $order"
+        );
 		// Data set length after filtering
-		$resFilterLength = self::sql_exec( $db,
-			"SELECT FOUND_ROWS()"
-		);
-		$recordsFiltered = $resFilterLength[0][0];
+//		$resFilterLength = self::sql_exec( $db,
+//			"SELECT FOUND_ROWS()"
+//		);
+//        $resFilterLength = $data['filtered'];
+		$recordsFiltered = count($count);
 		// Total data set length
 		$resTotalLength = self::sql_exec( $db,
 			"SELECT COUNT(\"{$primaryKey}\")
@@ -312,10 +319,11 @@ class SSP {
 		);
 	}
 	/**
-	 * The difference between this method and the `simple` one, is that you can
-	 * apply additional `where` conditions to the SQL queries. These can be in
+	 * The difference between this method and the \"simple\" one, is that you can
+	 * apply additional \"where\" conditions to the SQL queries. These can be in
 	 * one of two forms:
 	 *
+	 * * 'Result condition' - This is applied to the result set, but not the
 	 * * 'Result condition' - This is applied to the result set, but not the
 	 *   overall paging information query - i.e. it will not effect the number
 	 *   of records that a user sees they can have access to. This should be

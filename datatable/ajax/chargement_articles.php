@@ -47,7 +47,7 @@ $sql_details = array(
     'user' => '',
     'pass' => '',
     'db'   => '',
-    'host' => ''
+    'host' => 'sio-sql'
 );
  
  
