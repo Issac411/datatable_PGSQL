@@ -225,7 +225,7 @@ class SSP {
 				$column = $columns[ $columnIdx ];
 				if ( $requestColumn['searchable'] == 'true' ) {
 					$binding = self::bind( $bindings, '%'.$str.'%', PDO::PARAM_STR );
-					$globalSearch[] = "\"".$column['db']."\" LIKE ".$binding;
+					$globalSearch[] = "CAST(\"".$column['db']."\" AS TEXT) LIKE ".$binding;
 				}
 			}
 		}
@@ -281,6 +281,12 @@ class SSP {
 		$order = self::order( $request, $columns );
 		$where = self::filter( $request, $columns, $bindings );
 		// Main query to actually get the data
+
+        $req = "SELECT \"".implode("\", \"", self::pluck($columns, 'db'))."\"
+			 FROM \"$table\"
+			 $where
+			 $order
+			 $limit";
 		$data = self::sql_exec( $db, $bindings,
 			"SELECT \"".implode("\", \"", self::pluck($columns, 'db'))."\"
 			 FROM \"$table\"
@@ -309,6 +315,13 @@ class SSP {
 		/*
 		 * Output
 		 */
+//		foreach ($bindings as $b){
+//		    echo "<pre>";
+//		    print_r($bindings);
+//		    echo "</pre>";
+//		    $req = str_replace($b['key'],"'".$b['val']."'",$req);
+//        }
+//		echo($req);
 		return array(
 			"draw"            => isset ( $request['draw'] ) ?
 				intval( $request['draw'] ) :
